@@ -10,7 +10,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Skillbotai\\LaravelPkgAuditlog\\": "src/"
+            "Skillbotai\\AuditLog\\": "src/"
         }
     },
 
