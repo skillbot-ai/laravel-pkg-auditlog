@@ -6,7 +6,7 @@
         "laravel/framework": "^10.10"
     },
     "require-dev": {
-        "pestphp/pest-plugin-laravel": "^2.4",
+        "pestphp/pest-plugin-laravel": "^2.4"
     },
     "autoload": {
         "psr-4": {
