@@ -13,6 +13,14 @@
             "Skillbotai\\LaravelPkgAuditlog\\": "src/"
         }
     },
+
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SkillbotAI\\AuditLog\\SkillbotAIAuditLogServiceProvider"
+            ]
+        }
+    },  
     "authors": [
         {
             "name": "Kovács Szilveszter",
