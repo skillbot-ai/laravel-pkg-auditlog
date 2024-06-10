@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Schema;
 
 $selected_database = [];
 
+uses(Tests\TestCase::class, Tests\CreatesApplication::class);
+
 beforeEach(function () use (&$selected_database) {
     $this->test_db_conn = 'mysql_test';
     //$this->selected_database = config('database.connections.' . $this->test_db_conn);

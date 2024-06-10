@@ -1,5 +1,5 @@
 <?php
 
-use Tests\TestCase;
- 
-uses(TestCase::class)->in('Feature');
+use SkillbotAI\AuditLog\Tests\TestCase;
+
+uses(\Illuminate\Foundation\Testing\TestCase::class)->in('Feature');

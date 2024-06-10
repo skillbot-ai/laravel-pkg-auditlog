@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Schema;
 
 $selected_database = [];
 
+uses(Tests\TestCase::class, Tests\CreatesApplication::class);
+
 function runAuditLogChecker($than)
 {
     $audit_logger = new AuditLogCreator($than->test_db_conn);
