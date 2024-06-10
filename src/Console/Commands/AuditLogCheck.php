@@ -3,7 +3,7 @@
 namespace SkillbotAI\AuditLog\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Services\AuditLogCreator as ServicesAuditLogCreator;
+use SkillbotAI\AuditLog\Services\AuditLogCreator as ServicesAuditLogCreator;
 
 class AuditLogCheck extends Command
 {

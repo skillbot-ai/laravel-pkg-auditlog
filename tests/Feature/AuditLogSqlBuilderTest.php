@@ -1,6 +1,6 @@
 <?php
 
-use App\Traits\AuditLogSqlBuilder;
+use SkillbotAI\AuditLog\Traits\AuditLogSqlBuilder;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
