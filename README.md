@@ -1,4 +1,4 @@
-# Laravel audit Llog package
+# Laravel audit Log package
 
 Audit log trigger creator and checker Laravel package.
 
