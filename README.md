@@ -1,4 +1,4 @@
-# Laravel audit Llog package
+# Laravel audit Log package
 
 Audit log trigger creator and checker Laravel package.
 
@@ -26,9 +26,6 @@ OR
 [Configure mysql service](#configure-the-local-development-environment)
 
 ### 1. Config composer
-ghp_... is github PAT api key.
-
-[Create PAT token](#create-pat-token)
 ```json
 {
     "repositories": [
@@ -40,17 +37,12 @@ ghp_... is github PAT api key.
     "require": {
         "skillbotai/laravel-pkg-auditlog": "dev-main"
     },
-    "config": {
-        "github-oauth": {
-            "github.com": "ghp_?????"
-        }
-    },
 }
 ```
 
 ### 2. Composer install
 ```bash
-composer install
+composer update
 ```
 
 ### 3. Configure database
@@ -115,24 +107,6 @@ services:
       - ./.docker/mysql/my.cnf:/etc/mysql/my.cnf
     # ...
 ```
-
-## Create PAT token
-
-1. Visit [https://github.com/settings/tokens](https://github.com/settings/tokens).
-
-2. Click **Generate new token**.
-```
-Token Description: (your computer name)
-Scopes:
-    [X] repo
-        [X] repo:status
-        [X] repo_deployment
-        [X] public_repo
-        [X] repo:invite
-```
-3. Click **Generate token**.
-
-4. Copy the generated string to a safe place, such as a password safe.
 
 ## Database trigger config
 
