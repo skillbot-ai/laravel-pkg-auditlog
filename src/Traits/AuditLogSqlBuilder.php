@@ -232,6 +232,7 @@ trait AuditLogSqlBuilder
      */
     private function createTriggerColumnsSql(array $columns, string $type): string
     {
+        sort($columns);
         $result = array_map(function ($item) use ($type) {
             if (in_array($item, $this->ignore_colnums)) {
                 return "'{$item}', null";

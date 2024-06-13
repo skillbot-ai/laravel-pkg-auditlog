@@ -84,7 +84,7 @@ it('creates audit log triggers', function () {
             VALUES(
                 NEW.id,
                 null,
-                JSON_OBJECT('id', NEW.id,'role', NEW.role,'user', NEW.user,'description', NEW.description),
+                JSON_OBJECT('description', NEW.description,'id', NEW.id,'role', NEW.role,'user', NEW.user),
                 'INSERT',
                 CURRENT_TIMESTAMP,
                 USER()
@@ -106,8 +106,8 @@ it('creates audit log triggers', function () {
             )
             VALUES(
                 NEW.id,
-                JSON_OBJECT('id', OLD.id,'role', OLD.role,'user', OLD.user,'description', OLD.description),
-                JSON_OBJECT('id', NEW.id,'role', NEW.role,'user', NEW.user,'description', NEW.description),
+                JSON_OBJECT('description', OLD.description,'id', OLD.id,'role', OLD.role,'user', OLD.user),
+                JSON_OBJECT('description', NEW.description,'id', NEW.id,'role', NEW.role,'user', NEW.user),
                 'UPDATE',
                 CURRENT_TIMESTAMP,
                 USER()
@@ -128,7 +128,7 @@ it('creates audit log triggers', function () {
             )
             VALUES(
                 OLD.id,
-                JSON_OBJECT('id', OLD.id,'role', OLD.role,'user', OLD.user,'description', OLD.description),
+                JSON_OBJECT('description', OLD.description,'id', OLD.id,'role', OLD.role,'user', OLD.user),
                 null,
                 'DELETE',
                 CURRENT_TIMESTAMP,

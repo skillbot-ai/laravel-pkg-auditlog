@@ -69,7 +69,20 @@ test('Check tables', function () use (&$selected_database) {
         ->get();
     $table_names = $tables->pluck('TABLE_NAME')->unique()->toArray();
 
-    $ignore_tables = [];
+    $ignore_tables =  [
+        'test_ignore_true' => [
+            'ignore' => true,
+        ],
+        'test_ignore_false' => [
+            'ignore' => false,
+        ],
+        'test_field_ignore' => [
+            'ignore_fields' => ['password', 'uuid'],
+        ],
+        'test_id_field_change' => [
+            'id_field' => 'permission_id',
+        ]
+    ];
     foreach ($table_names as $table_name) {
         $ignore_tables[$table_name] = [
             'ignore' => true,
@@ -99,13 +112,13 @@ test('Run checker', function () {
 test('Ignore table true', function () {
 
     $audit_logger = new AuditLogCreator($this->test_db_conn);
+    $audit_logger->setSelectedDatabaseConfig($this->selected_database);
+
     $triggers = $audit_logger->getTriggers();
 
     $table_name = 'test_ignore_true';
     $table_trigger = $triggers
         ->where('EVENT_OBJECT_TABLE', $table_name);
-
-
     expect($table_trigger->count())->toBe(0);
     $this->assertFalse(Schema::connection($this->test_db_conn)->hasTable($table_name . '_audit_log'));
 });
@@ -113,6 +126,7 @@ test('Ignore table true', function () {
 test('Ignore table false', function () {
 
     $audit_logger = new AuditLogCreator($this->test_db_conn);
+    $audit_logger->setSelectedDatabaseConfig($this->selected_database);
     $triggers = $audit_logger->getTriggers();
 
     $table_name = 'test_ignore_false';
@@ -271,12 +285,13 @@ test('Create new table', function () {
 })->depends('Check fail audit_log config');
 
 test('Run checker (new table)', function () {
-runAuditLogChecker($this);
+    runAuditLogChecker($this);
 })->depends('Create new table');
 
 test('Has new table audit_log table and trigger', function () {
 
     $audit_logger = new AuditLogCreator($this->test_db_conn);
+    $audit_logger->setSelectedDatabaseConfig($this->selected_database);
     $triggers = $audit_logger->getTriggers();
 
     $table_name = 'test_new_table';
@@ -325,6 +340,7 @@ test('Run checker (new column)', function () {
 test('Check new column audit_log trigger', function () {
 
     $audit_logger = new AuditLogCreator($this->test_db_conn);
+    $audit_logger->setSelectedDatabaseConfig($this->selected_database);
     $triggers = $audit_logger->getTriggers();
 
     $table_name = 'test_default';
@@ -360,7 +376,7 @@ test('Remove new column', function () {
             $table->dropColumn('new');
         });
 
-        runAuditLogChecker($this);
+    runAuditLogChecker($this);
 })->depends('Create new column');
 
 test('Check removed new column audit_log trigger', function () {
