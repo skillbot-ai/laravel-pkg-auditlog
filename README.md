@@ -74,7 +74,7 @@ return [
     ],
 ];
 ```
-### 5. Configure docker-entrypount.sh
+### 5. Configure docker-entrypoint.sh
 Insert auditlog:check commend after migrate and other database modifeyer command.
 `mysql` is specific database name. (config/database.php connections.mysql)
 ```bash

@@ -402,6 +402,44 @@ test('Check removed new column audit_log trigger', function () {
 })->depends('Run checker (new column)');
 
 
+test('Check double record error', function () {
+
+    $table_name = 'test_default';
+
+    DB::connection($this->test_db_conn)
+        ->table($table_name)
+        ->insert([
+            'id' => 2212,
+            'role'  => 'asdaadd',
+            'user'  => 'asdaadd',
+            'description' => 'asdadafew aadd'
+        ]);
+
+    DB::connection($this->test_db_conn)
+        ->table($table_name)
+        ->where('id', 2212)
+        ->update(
+            [
+                'role'  => 'asdaadd2',
+                'user'  => 'asdaadd2',
+                'description' => 'asdadafew aadd2'
+            ]
+        );
+    DB::connection($this->test_db_conn)
+        ->table($table_name)
+        ->where('id', 2212)
+        ->update(
+            [
+                'role'  => 'asdaadd3',
+                'user'  => 'asdaadd2',
+                'description' => 'asdadafew aadd2'
+            ]
+        );
+
+        expect(true)->toBeTrue();
+});
+
+
 test('Remove tables', function () {
 
     $tables = [

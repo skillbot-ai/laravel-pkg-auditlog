@@ -5,7 +5,9 @@ namespace SkillbotAI\AuditLog\Services;
 use Illuminate\Support\Facades\Log;
 use SkillbotAI\AuditLog\Traits\AuditLogSqlBuilder;
 use Exception;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class AuditLogCreator
 {
@@ -46,16 +48,46 @@ class AuditLogCreator
     {
 
         // Get all tables and table colnums
-        $tables = DB::connection($this->selected_database_key)->table('INFORMATION_SCHEMA.COLUMNS')->select('TABLE_NAME', 'COLUMN_NAME')->where('TABLE_SCHEMA', $this->selected_database['database'])->get();
+        $tables = DB::connection($this->selected_database_key)
+            ->table('INFORMATION_SCHEMA.COLUMNS')
+            ->select('TABLE_NAME', 'COLUMN_NAME', 'COLUMN_KEY')
+            ->where('TABLE_SCHEMA', $this->selected_database['database'])
+            ->get();
         $table_names = $tables->pluck('TABLE_NAME')->unique()->toArray();
 
         // Get all triggers
         $triggers = $this->getTriggers();
 
+
         // Check and create triggers
         foreach ($table_names as $table_name) {
             // Check if table is *_audit_log table
-            if (strpos($table_name, '_audit_log') !== false) {
+            if (strpos($table_name, '_audit_log') == true) {
+                // Check if table has primary key
+                // TODO old log table schema updater remove
+
+                $index_keys = $tables->where('TABLE_NAME', $table_name)
+                    ->where('COLUMN_KEY', 'MUL')
+                    ->count();
+                if ($index_keys != 1) {
+
+                    $primary_keys = $tables->where('TABLE_NAME', $table_name)
+                        ->where('COLUMN_KEY', 'PRI')
+                        ->count();
+                    if ($primary_keys == 3) {
+                        Schema::connection($this->selected_database_key)
+                            ->table($table_name, function (Blueprint $table) use ($table_name) {
+
+                                // Távolítsd el a primary key-t
+                                $table->dropPrimary();
+
+                                // Add hozzá az indexet
+                                $table->index('id');
+                                Log::debug('⚠️ Update ' . $table_name . ' index key.');
+                            });
+                    }
+                }
+
                 continue;
             }
 
@@ -91,7 +123,7 @@ class AuditLogCreator
             }
 
             $this->ignore_colnums = $this->selected_database['audit_log']['tables'][$table_name]['ignore_fields'] ?? [];
-            
+
             if ($table_triggers->count() == 0) {
                 $this->createLogTriggers($table_name, $columns, $id);
             } else {

@@ -25,7 +25,7 @@ trait AuditLogSqlBuilder
             $table->enum('dml_type', ['INSERT', 'UPDATE', 'DELETE']);
             $table->timestamp('dml_timestamp');
             $table->string('dml_created_by', 200);
-            $table->primary(array('id', 'dml_type', 'dml_timestamp'));
+            $table->index('id');
         });
         Log::debug('🆕 Created ' . $table_name . '_audit_log table.');
     }
