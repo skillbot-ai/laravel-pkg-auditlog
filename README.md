@@ -42,7 +42,7 @@ OR
 
 ### 2. Composer install
 ```bash
-composer update
+composer update skillbot-ai/laravel-pkg-auditlog
 ```
 
 ### 3. Configure database
